@@ -32,6 +32,7 @@ fn add(a: i64, b: i64) -> i64 {
 fn main() -> i64 {
     let answer: i64 = add(20, 22);
     print(answer);
+    return 0;
 }
 ```
 
