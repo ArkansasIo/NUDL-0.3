@@ -70,6 +70,8 @@ void emit_stmt(std::ostringstream& out, const Stmt& stmt, int indent) {
         using T = std::decay_t<decltype(node)>;
         if constexpr (std::is_same_v<T, Binding>) {
             out << pad << (node.constant ? "const auto " : "auto ") << node.name << " = " << expr(*node.value) << ";\n";
+        } else if constexpr (std::is_same_v<T, Assign>) {
+            out << pad << node.name << " = " << expr(*node.value) << ";\n";
         } else if constexpr (std::is_same_v<T, Return>) {
             out << pad << "return " << expr(*node.value) << ";\n";
         } else if constexpr (std::is_same_v<T, ExprStmt>) {
