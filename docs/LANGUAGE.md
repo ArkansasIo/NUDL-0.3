@@ -21,7 +21,7 @@ let answer = count + 2
 print(label, answer)
 ```
 
-The proposed semantics distinguish reassignable `let` bindings from non-reassignable `const` bindings. Type inference and enforcement vary by implementation today.
+The native parser currently requires an explicit return arrow and type for every function, including `main`; use `-> i64` and return a status code for examples intended to run with `nudlc`. The proposed semantics distinguish reassignable `let` bindings from non-reassignable `const` bindings. Type inference and enforcement vary by implementation today.
 
 ## Functions
 
