@@ -25,9 +25,9 @@ nudlc <file.nudl> [--target <language>] [--emit <output-file>]
 Examples:
 
 ```sh
-nudlc examples/hello.nudl
-nudlc examples/hello.nudl --target cpp --emit build/hello.cpp
-nudlc examples/hello.nudl --target python --emit build/hello.py
+nudlc examples/hello-world.nudl
+nudlc examples/hello-world.nudl --target cpp --emit build/hello.cpp
+nudlc examples/hello-world.nudl --target python --emit build/hello.py
 ```
 
 The native compiler currently implements a deliberately limited language subset. The CLI accepts target names for future backends, but the existence of a target name does not mean that target is implemented. At this revision, C++ is the implemented native code-generation backend; unsupported targets return a clear error.
