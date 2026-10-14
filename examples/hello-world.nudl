@@ -1,1 +1,4 @@
-fn main() -> i64 {\n    print("Hello from NUDL 0.3");\n    return 0;\n}\n
+fn main() -> i64 {
+    print("Hello from NUDL 0.3");
+    return 0;
+}
