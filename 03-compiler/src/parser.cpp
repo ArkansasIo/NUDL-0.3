@@ -20,7 +20,30 @@ std::string Parser::expect_identifier(const char*m){return expect(TokenKind::Ide
 std::unique_ptr<Program> Parser::parse(){auto r=std::make_unique<Program>();while(peek().kind!=TokenKind::End){if(peek().text=="fn"){auto f=function();if(f)r->functions.push_back(std::move(*f));}else if(peek().text=="let"||peek().text=="const")r->statements.push_back(statement());else{d_.error(peek(),"expected fn, let, or const");++p_;}}return r;}
 std::unique_ptr<Function> Parser::function(){++p_;auto f=std::make_unique<Function>();f->name=expect_identifier("expected function name");expect(TokenKind::LParen,"expected '('");if(!match(TokenKind::RParen)){do{Parameter q{expect_identifier("expected parameter"),""};expect(TokenKind::Colon,"expected ':'");q.type=parse_type();f->params.push_back(q);}while(match(TokenKind::Comma));expect(TokenKind::RParen,"expected ')'");}expect(TokenKind::Arrow,"expected '->'");f->return_type=parse_type();f->body=block();return f;}
 std::vector<StmtPtr> Parser::block(){expect(TokenKind::LBrace,"expected '{'");std::vector<StmtPtr>b;while(peek().kind!=TokenKind::RBrace&&peek().kind!=TokenKind::End)b.push_back(statement());expect(TokenKind::RBrace,"expected '}'");return b;}
-StmtPtr Parser::statement(){if(peek().text=="let"||peek().text=="const")return binding();if(peek().text=="return"){++p_;auto e=expression();match(TokenKind::Semicolon);return std::make_unique<Stmt>(Return{std::move(e)});}if(peek().text=="if"||peek().text=="while")return control();auto e=expression();match(TokenKind::Semicolon);return std::make_unique<Stmt>(ExprStmt{std::move(e)});}
+StmtPtr Parser::statement() {
+    if (peek().text == "let" || peek().text == "const") return binding();
+    if (peek().text == "return") {
+        ++p_;
+        auto value = expression();
+        match(TokenKind::Semicolon);
+        return std::make_unique<Stmt>(Return{std::move(value)});
+    }
+    if (peek().text == "if" || peek().text == "while") return control();
+
+    // Assignment is a statement, not an expression. Look ahead before consuming the identifier.
+    if (peek().kind == TokenKind::Identifier && p_ + 1 < t_.size() &&
+        t_[p_ + 1].kind == TokenKind::Equal) {
+        const std::string name = t_[p_++].text;
+        ++p_; // consume '='
+        auto value = expression();
+        match(TokenKind::Semicolon);
+        return std::make_unique<Stmt>(Assign{name, std::move(value)});
+    }
+
+    auto value = expression();
+    match(TokenKind::Semicolon);
+    return std::make_unique<Stmt>(ExprStmt{std::move(value)});
+}
 StmtPtr Parser::binding(){bool c=peek().text=="const";++p_;Binding b;b.constant=c;b.name=expect_identifier("expected variable name");if(match(TokenKind::Colon))b.type=parse_type();expect(TokenKind::Equal,"expected '='");b.value=expression();match(TokenKind::Semicolon);return std::make_unique<Stmt>(std::move(b));}
 StmtPtr Parser::control(){bool wh=peek().text=="while";++p_;expect(TokenKind::LParen,"expected '(' after control keyword");auto cond=expression();expect(TokenKind::RParen,"expected ')'");auto body=block();if(wh)return std::make_unique<Stmt>(While{std::move(cond),std::move(body)});std::vector<StmtPtr>eb;if(peek().text=="else"){++p_;eb=block();}return std::make_unique<Stmt>(If{std::move(cond),std::move(body),std::move(eb)});}
 int Parser::precedence(TokenKind k)const{switch(k){case TokenKind::EqualEqual:case TokenKind::BangEqual:return 2;case TokenKind::Less:case TokenKind::LessEqual:case TokenKind::Greater:case TokenKind::GreaterEqual:return 3;case TokenKind::Plus:case TokenKind::Minus:return 4;case TokenKind::Star:case TokenKind::Slash:case TokenKind::Percent:return 5;default:return -1;}}
