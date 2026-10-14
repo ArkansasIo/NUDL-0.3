@@ -14,3 +14,22 @@ function syncBottom(){if(bottomOutput)bottomOutput.textContent=output.textConten
 ["quickNew","quickSave","quickCompile2","quickRun2","clearTerminal2"].forEach(id=>{const e=document.querySelector("#"+id);if(!e)return;e.onclick=id==="quickNew"?()=>document.querySelector("#newBtn").click():id==="quickSave"?()=>document.querySelector("#saveBtn").click():id==="quickCompile2"?()=>document.querySelector("#quickCompile").click():id==="quickRun2"?()=>document.querySelector("#runBtn").click():()=>document.querySelector("#clearTerminal").click()});
 ["terminalTab","outputTab","problemsTab","debugTab"].forEach(id=>{const e=document.querySelector("#"+id);if(e)e.onclick=()=>{document.querySelectorAll(".bottomTab").forEach(x=>x.classList.remove("active"));e.classList.add("active");syncBottom()}});
 const oldCompile=window.compile;
+
+// Noodle Visual Studio-style workspace modes.
+const textView=document.querySelector("#textEditorView"), blueprintView=document.querySelector("#blueprintPane"), modeBadge=document.querySelector("#modeBadge");
+function setEditorMode(mode){
+  const blueprint=mode==="blueprint";
+  if(textView)textView.style.display=blueprint?"none":"flex";
+  if(blueprintView)blueprintView.classList.toggle("active",blueprint);
+  if(modeBadge)modeBadge.textContent=blueprint?"BLUEPRINT":"TEXT";
+  log("[View] "+(blueprint?"Blueprint Editor":"Text Editor"));
+}
+document.querySelector("#textModeBtn")?.addEventListener("click",()=>setEditorMode("text"));
+document.querySelector("#blueprintModeBtn")?.addEventListener("click",()=>setEditorMode("blueprint"));
+document.querySelector("#sidebarText")?.addEventListener("click",()=>setEditorMode("text"));
+document.querySelector("#sidebarBlueprint")?.addEventListener("click",()=>setEditorMode("blueprint"));
+document.querySelector("#sidebarToggle")?.addEventListener("click",()=>{
+  const s=document.querySelector("#sidebar");
+  if(s)s.classList.toggle("collapsed");
+});
+setEditorMode("text");
