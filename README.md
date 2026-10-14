@@ -62,6 +62,8 @@ data people: Person {
 
 ## Documentation index
 
+- [Changelog](CHANGELOG.md)
+
 - [Language overview](docs/LANGUAGE.md)
 - [Proposed specification](spec/SPEC-0.3.md)
 - [EBNF grammar](grammar/NUDL-0.3.ebnf)
