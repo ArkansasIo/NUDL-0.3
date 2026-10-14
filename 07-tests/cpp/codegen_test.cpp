@@ -33,5 +33,13 @@ int main() {
 })";
     const auto branch_output = compile_cpp(branch);
     assert(branch_output.find(" else {") != std::string::npos);
+
+    const std::string assignment = R"(fn main() -> i64 {
+    let n: i64 = 0;
+    while (n < 3) { n = n + 1; }
+    return n;
+})";
+    const auto assignment_output = compile_cpp(assignment);
+    assert(assignment_output.find("n = (n + 1);") != std::string::npos);
     return 0;
 }
