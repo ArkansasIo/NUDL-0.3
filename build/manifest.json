@@ -1,0 +1,31 @@
+{
+  "product": "Noodle",
+  "project": "NUDL-0.3",
+  "build_id": "NUDL-0.3-DEV-0001",
+  "build_name": "Noodle 0.3 Developer Build",
+  "version": "0.3.0-dev",
+  "build_number": 1,
+  "release_channel": "development",
+  "language_version": "0.3",
+  "implementation_language": "C++23",
+  "build_system": "CMake",
+  "repository": "ArkansasIo/NUDL-0.3",
+  "branch": "main",
+  "target": "native",
+  "architecture": "unspecified",
+  "build_type": "development",
+  "git_commit": "recorded-by-build-system",
+  "developers": [],
+  "teams": [
+    "language-architecture",
+    "compiler",
+    "runtime",
+    "backends",
+    "ide",
+    "mathematics-algorithms",
+    "stdlib-interoperability",
+    "testing-verification",
+    "documentation-education",
+    "release-infrastructure"
+  ]
+}
