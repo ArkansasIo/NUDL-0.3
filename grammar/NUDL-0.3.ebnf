@@ -1,27 +1,71 @@
 # NUDL 0.3 EBNF Draft
 
+This grammar records the intended language shape. It is not a claim that every production is implemented in the native C++ compiler. Grammar and implementation differences should be covered by shared conformance fixtures.
+
 ```ebnf
-program     = { declaration } ;
-declaration = schema | data | function | binding ;
-schema      = "schema" , identifier , "{" , { field } , "}" ;
-field       = identifier , ":" , type , [ "required" ] , [ "=" , expression ] ;
-data        = "data" , identifier , ":" , identifier , "{" , { record } , "}" ;
-function    = "fn" , identifier , "(" , [ parameters ] , ")" , "->" , type , block ;
-binding     = ( "let" | "const" ) , identifier , [ ":" , type ] , "=" , expression ;
-record      = "{" , [ fields ] , "}" ;
-fields      = field-value , { "," , field-value } ;
-field-value = identifier , ":" , expression ;
-parameters  = parameter , { "," , parameter } ;
-parameter   = identifier , ":" , type ;
-type        = identifier , [ "[ ]" ] ;
-block       = "{" , { statement } , "}" ;
-statement   = binding | "return" , expression ;
-expression  = literal | identifier | call | binary ;
-call        = identifier , "(" , [ expression , { "," , expression } ] , ")" ;
-binary      = expression , operator , expression ;
-operator    = "==" | "!=" | "<" | "<=" | ">" | ">=" | "+" | "-" | "*" | "/" ;
-literal     = string | number | "true" | "false" | "null" ;
-identifier  = letter , { letter | digit | "_" } ;
+program          = { declaration } , EOF ;
+declaration      = schema_decl | data_decl | function_decl | binding_decl
+                 | statement ;
+
+schema_decl      = "schema" , identifier , "{" , { schema_field } , "}" ;
+schema_field     = identifier , ":" , type , [ "required" ] , [ "=" , expression ] ;
+
+data_decl        = "data" , identifier , ":" , identifier , "{"
+                 , { record } , "}" ;
+record           = "{" , [ field_values ] , "}" ;
+field_values     = field_value , { "," , field_value } ;
+field_value      = identifier , ":" , expression ;
+
+function_decl    = "fn" , identifier , "(" , [ parameters ] , ")"
+                 , [ "->" , type ] , block ;
+parameters       = parameter , { "," , parameter } ;
+parameter        = identifier , ":" , type ;
+
+binding_decl     = ( "let" | "const" ) , identifier , [ ":" , type ]
+                 , "=" , expression , [ ";" ] ;
+type             = identifier , [ "[" , "]" ] ;
+
+block            = "{" , { statement } , "}" ;
+statement        = binding_decl
+                 | "return" , [ expression ] , [ ";" ]
+                 | if_stmt
+                 | while_stmt
+                 | expression , [ ";" ] ;
+if_stmt          = "if" , "(" , expression , ")" , block
+                 , [ "else" , ( block | if_stmt ) ] ;
+while_stmt       = "while" , "(" , expression , ")" , block ;
+
+expression       = logical_or ;
+logical_or       = logical_and , { "||" , logical_and } ;
+logical_and      = equality , { "&&" , equality } ;
+equality         = comparison , { ( "==" | "!=" ) , comparison } ;
+comparison       = term , { ( "<" | "<=" | ">" | ">=" ) , term } ;
+term             = factor , { ( "+" | "-" ) , factor } ;
+factor           = unary , { ( "*" | "/" | "%" ) , unary } ;
+unary            = ( "!" | "-" ) , unary | postfix ;
+postfix          = primary , { call_suffix | index_suffix | member_suffix } ;
+call_suffix      = "(" , [ arguments ] , ")" ;
+index_suffix     = "[" , expression , "]" ;
+member_suffix    = "." , identifier ;
+arguments        = expression , { "," , expression } ;
+
+primary          = literal
+                 | identifier
+                 | array_literal
+                 | "(" , expression , ")" ;
+array_literal    = "[" , [ arguments ] , "]" ;
+literal          = string | number | "true" | "false" | "null" ;
+identifier       = ( letter | "_" ) , { letter | digit | "_" } ;
 ```
 
-This EBNF is a draft grammar and should be treated as a design artifact until parser tests establish conformance.
+## Lexical notes
+
+- Whitespace is insignificant between tokens.
+- Proposed line comments begin with `#` or `//`.
+- Strings use double quotes with escaped delimiters and control characters.
+- `EOF` is an end-of-file marker, not source text.
+- Numeric exponent syntax, Unicode identifier classes, multiline strings, and exact escape behavior require further normative decisions.
+
+## Known divergence
+
+The native parser currently supports a narrower subset centered on functions, bindings, expressions, arrays, and control flow. It does not yet parse schema/data declarations or member/index expressions. The browser parser has a different feature set. Treat this EBNF as the design target and the implementation-support matrix as the status record.
