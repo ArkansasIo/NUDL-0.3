@@ -74,6 +74,8 @@ data people: Person {
 - [Conformance plan](docs/CONFORMANCE.md)
 - [Roadmap](docs/ROADMAP.md)
 - [Contributing](docs/CONTRIBUTING.md)
+- [Feature status matrix](docs/FEATURE-STATUS.md)
+- [Native test guide](07-tests/README.md)
 
 ## Current implementation notes
 
