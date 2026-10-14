@@ -9,8 +9,8 @@
 - Build number: 1
 - Release channel: Development
 - Language specification: NUDL 0.3
-- Primary implementation: C++23
-- Build system: CMake
+- Primary implementation: Noodle
+- Build system: Noodle Make (NMake)
 - Repository: ArkansasIo/NUDL-0.3
 - Primary branch: main
 
@@ -34,4 +34,4 @@ Individual credits are added only for actual contributors.
 
 Production builds should record Git commit SHA, working-tree state, compiler/version, CMake version, operating system, CPU architecture, target backend, build type, compiler flags, dependencies, UTC timestamp, and source-tree hash.
 
-Machine-readable metadata belongs in build/manifest.json.
+Machine-readable metadata belongs in build/manifest.json.\n\nC++23 remains a bootstrap implementation technology, not the identity of the Noodle build itself.
