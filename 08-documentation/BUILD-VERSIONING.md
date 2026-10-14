@@ -36,4 +36,4 @@ Build credits must represent actual contributors, not hypothetical team members.
 
 Every release artifact should contain product, version, build number, build ID, Git revision, target, architecture, toolchain, dependencies, and reproducibility metadata.
 
-The language version and compiler version remain separate compatibility identifiers.
+The language version and compiler version remain separate compatibility identifiers.\n\n## Native Noodle build system\n\nThe planned native build system is Noodle Make (NMake). It should describe source modules, targets, dependencies, generated artifacts, platform targets, compiler options, tests, and packaging in Noodle syntax. CMake remains an external bootstrap and compatibility build system until NMake can build the compiler itself.
