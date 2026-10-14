@@ -7,6 +7,17 @@ std::vector<Token> lex(std::string_view s){std::vector<Token> out;std::size_t i=
 while(i<s.size()){char c=s[i];if(c==' '||c=='\t'||c=='\r'){++i;++col;continue;}if(c=='\n'){++i;++line;col=1;continue;}if(c=='#'||(c=='/'&&i+1<s.size()&&s[i+1]=='/')){while(i<s.size()&&s[i]!='\n'){++i;++col;}continue;}auto l=line,cc=col;
 if(std::isalpha((unsigned char)c)||c=='_'){std::size_t j=i+1;while(j<s.size()&&(std::isalnum((unsigned char)s[j])||s[j]=='_'))++j;std::string x(s.substr(i,j-i));add(kw.count(x)?TokenKind::Keyword:TokenKind::Identifier,x,l,cc);col+=j-i;i=j;continue;}
 if(std::isdigit((unsigned char)c)){std::size_t j=i+1;while(j<s.size()&&(std::isdigit((unsigned char)s[j])||s[j]=='.'))++j;add(TokenKind::Number,std::string(s.substr(i,j-i)),l,cc);col+=j-i;i=j;continue;}
-if(c=='"'){std::string x;++i;++col;while(i<s.size()&&s[i]!='"'){if(s[i]=='\\'&&i+1<s.size()){char e=s[i+1];x+=(e=='n'?'\n':e=='t'?'\t':e);i+=2;col+=2;}else{x+=s[i++];++col;}}if(i<s.size()){++i;++col;}add(TokenKind::String,std::move(x),l,cc);continue;}
+if(c=='"'){std::string x;++i;++col;while(i<s.size()&&s[i]!='"'){if(s[i]=='\\'&&i+1<s.size()){
+char e=s[i+1];
+switch(e){
+case 'n': x+='\n'; break;
+case 'r': x+='\r'; break;
+case 't': x+='\t'; break;
+case '\\': x+='\\'; break;
+case '"': x+='"'; break;
+default: x+=e; break;
+}
+i+=2;col+=2;
+}else{x+=s[i++];++col;}}if(i<s.size()){++i;++col;}add(TokenKind::String,std::move(x),l,cc);continue;}
 TokenKind k=TokenKind::Unknown;std::size_t n=1;switch(c){case'(':k=TokenKind::LParen;break;case')':k=TokenKind::RParen;break;case'{':k=TokenKind::LBrace;break;case'}':k=TokenKind::RBrace;break;case'[':k=TokenKind::LBracket;break;case']':k=TokenKind::RBracket;break;case',':k=TokenKind::Comma;break;case':':k=TokenKind::Colon;break;case';':k=TokenKind::Semicolon;break;case'+':k=TokenKind::Plus;break;case'*':k=TokenKind::Star;break;case'%':k=TokenKind::Percent;break;case'/':k=TokenKind::Slash;break;case'!':k=TokenKind::Bang;if(i+1<s.size()&&s[i+1]=='='){k=TokenKind::BangEqual;n=2;}break;case'=':k=TokenKind::Equal;if(i+1<s.size()&&s[i+1]=='='){k=TokenKind::EqualEqual;n=2;}break;case'<':k=TokenKind::Less;if(i+1<s.size()&&s[i+1]=='='){k=TokenKind::LessEqual;n=2;}break;case'>':k=TokenKind::Greater;if(i+1<s.size()&&s[i+1]=='='){k=TokenKind::GreaterEqual;n=2;}break;case'-':k=TokenKind::Minus;if(i+1<s.size()&&s[i+1]=='>'){k=TokenKind::Arrow;n=2;}break;}add(k,std::string(s.substr(i,n)),l,cc);i+=n;col+=n;}out.push_back({TokenKind::End,"",line,col});return out;}
 }
