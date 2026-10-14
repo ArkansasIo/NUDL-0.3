@@ -2,13 +2,14 @@
 
 ## Current development build
 
-- Project: Noodle / NUDL
-- Build ID: NUDL-0.3-DEV-0001
+- Product: Noodle
+- Project: Noodle 0.3
+- Build ID: NOODLE-0.3-DEV-0001
 - Build name: Noodle 0.3 Developer Build
 - Version: 0.3.0-dev
 - Build number: 1
 - Release channel: Development
-- Language specification: NUDL 0.3
+- Language version: Noodle 0.3
 - Primary implementation: Noodle
 - Build system: Noodle Make (NMake)
 - Repository: ArkansasIo/NUDL-0.3
@@ -30,8 +31,19 @@ Engineering areas:
 
 Individual credits are added only for actual contributors.
 
+## Platform targets
+
+Noodle is intended to run natively on:
+- Windows
+- Linux
+- macOS
+
+The native build system must support all three platforms and select the appropriate compiler, linker, libraries, packaging format, and runtime integration for each target.
+
 ## Reproducibility metadata
 
-Production builds should record Git commit SHA, working-tree state, compiler/version, CMake version, operating system, CPU architecture, target backend, build type, compiler flags, dependencies, UTC timestamp, and source-tree hash.
+Production builds should record Git commit SHA, working-tree state, compiler/version, Noodle Make version, operating system, CPU architecture, target backend, build type, compiler flags, dependencies, UTC timestamp, and source-tree hash.
 
-Machine-readable metadata belongs in build/manifest.json.\n\nC++23 remains a bootstrap implementation technology, not the identity of the Noodle build itself.
+Machine-readable metadata belongs in build/manifest.json.
+
+C++23 remains a bootstrap implementation technology, not the identity of the Noodle build.
