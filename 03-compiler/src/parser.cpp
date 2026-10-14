@@ -1,6 +1,21 @@
 #include "nudl/parser.hpp"
 namespace nudl {
-Parser::Parser(std::vector<Token> x,Diagnostics& d):t_(std::move(x)),d_(d){} const Token& Parser::peek()const{return t_[p_];} bool Parser::match(TokenKind k){if(peek().kind==k){++p_;return true;}return false;} const Token& Parser::expect(TokenKind k,const char*m){if(peek().kind!=k)d_.error(peek(),m);return t_[p_++];}
+Parser::Parser(std::vector<Token> x, Diagnostics& d) : t_(std::move(x)), d_(d) {}
+const Token& Parser::peek() const {
+    static const Token end{TokenKind::End, "", 1, 1};
+    return p_ < t_.size() ? t_[p_] : end;
+}
+bool Parser::match(TokenKind k) {
+    if (peek().kind == k) { ++p_; return true; }
+    return false;
+}
+const Token& Parser::expect(TokenKind k, const char* message) {
+    if (peek().kind == k) return t_[p_++];
+    d_.error(peek(), message);
+    // Do not advance on mismatch; recovery is performed by the caller's parse loop.
+    static const Token missing{TokenKind::Unknown, "", 1, 1};
+    return missing;
+}
 std::string Parser::expect_identifier(const char*m){return expect(TokenKind::Identifier,m).text;} std::string Parser::parse_type(){if(peek().kind!=TokenKind::Identifier&&peek().kind!=TokenKind::Keyword){d_.error(peek(),"expected type");return"any";}return t_[p_++].text;}
 std::unique_ptr<Program> Parser::parse(){auto r=std::make_unique<Program>();while(peek().kind!=TokenKind::End){if(peek().text=="fn"){auto f=function();if(f)r->functions.push_back(std::move(*f));}else if(peek().text=="let"||peek().text=="const")r->statements.push_back(statement());else{d_.error(peek(),"expected fn, let, or const");++p_;}}return r;}
 std::unique_ptr<Function> Parser::function(){++p_;auto f=std::make_unique<Function>();f->name=expect_identifier("expected function name");expect(TokenKind::LParen,"expected '('");if(!match(TokenKind::RParen)){do{Parameter q{expect_identifier("expected parameter"),""};expect(TokenKind::Colon,"expected ':'");q.type=parse_type();f->params.push_back(q);}while(match(TokenKind::Comma));expect(TokenKind::RParen,"expected ')'");}expect(TokenKind::Arrow,"expected '->'");f->return_type=parse_type();f->body=block();return f;}
