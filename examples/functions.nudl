@@ -1,1 +1,9 @@
-fn add(a: i64, b: i64) -> i64 {\n    return a + b;\n}\n\nfn main() -> i64 {\n    let total: i64 = add(19, 23);\n    print(total);\n    return 0;\n}\n
+fn add(a: i64, b: i64) -> i64 {
+    return a + b;
+}
+
+fn main() -> i64 {
+    let total: i64 = add(19, 23);
+    print(total);
+    return 0;
+}
