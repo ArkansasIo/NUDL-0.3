@@ -22,13 +22,13 @@ int main() {
     assert(output.find("Hello, world!") != std::string::npos);
     assert(output.find("int main()") != std::string::npos);
 
-    const std::string escaped = R"(fn main() {
+    const std::string escaped = R"(fn main() -> i64 {
     print("first\nsecond \"quoted\"");
 })";
     const auto escaped_output = compile_cpp(escaped);
     assert(escaped_output.find("first\\nsecond \\\"quoted\\\"") != std::string::npos);
 
-    const std::string branch = R"(fn main() {
+    const std::string branch = R"(fn main() -> i64 {
     if (true) { print("yes"); } else { print("no"); }
 })";
     const auto branch_output = compile_cpp(branch);
