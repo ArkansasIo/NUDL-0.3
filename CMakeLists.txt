@@ -7,6 +7,7 @@ add_library(nudl_frontend
   03-compiler/src/lexer.cpp
   03-compiler/src/parser.cpp
   03-compiler/src/diagnostics.cpp
+  03-compiler/src/codegen.cpp
 )
 target_include_directories(nudl_frontend PUBLIC 03-compiler/include)
 add_library(nudl_runtime 03-compiler/src/interpreter.cpp)
