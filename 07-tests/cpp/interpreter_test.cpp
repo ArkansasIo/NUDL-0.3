@@ -2,4 +2,21 @@
 #include "nudl/lexer.hpp"
 #include "nudl/parser.hpp"
 #include <cassert>
-int main(){const char* source="fn add(a: i64, b: i64) -> i64 { return a + b; } let answer = add(2, 3);";auto tokens=nudl::lex(source);nudl::Diagnostics d;nudl::Parser p(std::move(tokens),d);auto program=p.parse();assert(d.ok());nudl::Interpreter vm(*program);assert(nudl::runtime_value_to_string(vm.run())=="null");return 0;}
+
+int main() {
+    const char* source = R"(fn main() -> i64 {
+        let n: i64 = 0;
+        while (n < 3) {
+            n = n + 1;
+        }
+        return n;
+    })";
+    auto tokens = nudl::lex(source);
+    nudl::Diagnostics diagnostics;
+    nudl::Parser parser(std::move(tokens), diagnostics);
+    auto program = parser.parse();
+    assert(diagnostics.ok());
+    nudl::Interpreter vm(*program);
+    assert(nudl::runtime_value_to_string(vm.run()) == "3");
+    return 0;
+}
