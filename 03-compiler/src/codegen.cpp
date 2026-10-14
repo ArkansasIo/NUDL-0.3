@@ -1,4 +1,5 @@
 #include "nudl/codegen.hpp"
+#include <algorithm>
 #include <sstream>
 #include <stdexcept>
 #include <type_traits>
