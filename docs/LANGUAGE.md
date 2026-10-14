@@ -1,26 +1,85 @@
-# NUDL Language Overview
+# NUDL 0.3 Language Overview
 
-## Core concepts
+NUDL (Noodle Unified Data Language) is an evolving language for typed program logic and structured data. The goal is to make functions, schemas, records, datasets, and validation readable in plain-text files while keeping syntax deterministic for tools.
 
-NUDL 0.3 organizes programs around declarations, typed values, records, datasets, functions, validation rules, and explicit transformations.
-
-### Example
+## First program
 
 ```nudl
-schema User {
-  id: u64 required
-  name: text
-  active: bool = true
-}
-
-data users: User {
-  { id: 1, name: "Alice", active: true }
-  { id: 2, name: "Bob", active: false }
-}
-
-fn active_users(input: User[]) -> User[] {
-  return input where item.active == true
+fn main() {
+    print("Hello from NUDL 0.3")
 }
 ```
 
-The example is a proposed NUDL syntax template, not evidence that a compiler already accepts every construct.
+Save as UTF-8 text, such as `hello-world.nudl`. See [CLI Reference](CLI-REFERENCE.md) for building and invoking the native compiler.
+
+## Variables and expressions
+
+```nudl
+let count: i64 = 40
+const label: text = "answer"
+let answer = count + 2
+print(label, answer)
+```
+
+The proposed semantics distinguish reassignable `let` bindings from non-reassignable `const` bindings. Type inference and enforcement vary by implementation today.
+
+## Functions
+
+```nudl
+fn add(a: i64, b: i64) -> i64 {
+    return a + b
+}
+
+fn main() {
+    print(add(19, 23))
+}
+```
+
+Functions use typed parameters and can declare a return type. The exact optional-return-annotation rule remains a compatibility issue between the design grammar and current native parser.
+
+## Branching and loops
+
+```nudl
+fn main() {
+    let n = 0
+    while (n < 3) {
+        print(n)
+        n = n + 1
+    }
+    if (n == 3) {
+        print("finished")
+    } else {
+        print("unexpected")
+    }
+}
+```
+
+Control flow is in the current native subset, but assignment and scope behavior should be verified with tests before being treated as stable across implementations.
+
+## Schemas and datasets
+
+```nudl
+schema User {
+    id: u64 required
+    name: text required
+    enabled: bool = true
+}
+
+data users: User {
+    { id: 1, name: "Ada" }
+    { id: 2, name: "Grace", enabled: false }
+}
+```
+
+This demonstrates the intended data-oriented syntax. Schema/data parsing and runtime validation are design goals and are not currently supported by the native parser.
+
+## Arrays and standard library
+
+The design includes array values and utility functions such as `print`, `len`, `str`, `typeof`, math helpers, and regex helpers. The browser interpreter currently implements some of these built-ins. The native runtime and generated targets do not yet share a complete standard library.
+
+## Compiler and IDE
+
+- [Native compiler](https://github.com/ArkansasIo/NUDL-0.3): C++23/CMake CLI, parser, interpreter, and staged source generation.
+- [Browser IDE](https://github.com/ArkansasIo/NUDL-IDE): TypeScript editor, diagnostics, interpreter, visual Blueprint editor, workspace tools, and code emitters.
+
+These are separate implementations. Check [Conformance Plan](CONFORMANCE.md) and the IDE [Language Support Matrix](https://github.com/ArkansasIo/NUDL-IDE/blob/main/docs/LANGUAGE-SUPPORT-MATRIX.md) for implementation status.
