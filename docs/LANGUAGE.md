@@ -7,6 +7,7 @@ NUDL (Noodle Unified Data Language) is an evolving language for typed program lo
 ```nudl
 fn main() -> i64 {
     print("Hello from NUDL 0.3")
+    return 0
 }
 ```
 
@@ -32,6 +33,7 @@ fn add(a: i64, b: i64) -> i64 {
 
 fn main() -> i64 {
     print(add(19, 23))
+    return 0
 }
 ```
 
