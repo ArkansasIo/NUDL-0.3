@@ -15,3 +15,5 @@ footer{height:30px;border-top:1px solid var(--line);display:flex;align-items:cen
 @media(max-width:760px){html,body{overflow:auto}.topbar{height:auto;min-height:56px;flex-wrap:wrap}.menubar{order:3;width:100%;overflow:auto}.workspace{grid-template-columns:1fr;height:auto;min-height:600px}.sidebar,.rightPane{display:none}.centerPane{height:600px}.bottomDock{height:180px}.bpSide{width:160px;flex-basis:160px}}
 
 .windowTitle .logo{flex:0 0 auto}.sidebar:before{content:"SOLUTION EXPLORER";display:block;color:#8ea3b8;font-size:9px;letter-spacing:.12em;padding:4px 6px 8px;border-bottom:1px solid #1b2b3d;margin-bottom:6px}.rightPane:before{content:"PROPERTIES / OUTLINE";display:block;height:25px;line-height:25px;padding-left:9px;color:#8ea3b8;font-size:9px;letter-spacing:.1em;border-bottom:1px solid #1b2b3d}.panel h2{margin-top:2px}
+/* Functional workspace collapse state */
+.sidebar.collapsed{display:none}.workspace.sidebar-collapsed{grid-template-columns:0 minmax(0,1fr) 300px}@media(max-width:1000px){.workspace.sidebar-collapsed{grid-template-columns:0 minmax(0,1fr) 240px}}@media(max-width:760px){.workspace.sidebar-collapsed{grid-template-columns:1fr}}
