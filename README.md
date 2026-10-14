@@ -17,7 +17,7 @@ ctest --test-dir build --output-on-failure
 Example:
 
 ```sh
-./build/nudlc examples/hello.nudl --target cpp --emit build/hello.cpp
+./build/nudlc examples/hello-world.nudl --target cpp --emit build/hello.cpp
 ```
 
 On Windows, run the generated `nudlc.exe` from the build directory and adjust file paths as needed. See [CLI Reference](docs/CLI-REFERENCE.md) for the Notepad workflow and exit codes.
