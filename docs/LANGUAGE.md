@@ -42,8 +42,12 @@ Functions use typed parameters and can declare a return type. The exact optional
 ```nudl
 fn main() -> i64 {
     let n = 0
-    if (n == 0) {
-        print("ready")
+    while (n < 3) {
+        print(n)
+        n = n + 1
+    }
+    if (n == 3) {
+        print("finished")
     } else {
         print("unexpected")
     }
@@ -51,7 +55,7 @@ fn main() -> i64 {
 }
 ```
 
-The native parser supports basic `if` and `while` syntax, but assignment statements are not implemented in its current AST/parser. Therefore, loop examples that mutate a variable are design examples rather than runnable native programs until assignment support is added.
+The native parser and interpreter now support simple name assignments such as `n = n + 1`. Nested lexical scopes, const reassignment protection, and full static type checking are not yet complete.
 
 ## Schemas and datasets
 
