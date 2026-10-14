@@ -11,7 +11,7 @@ This matrix is the conservative status record for the current repositories. “I
 | Arithmetic and comparison | Implemented subset | Implemented subset | Conformance tests required |
 | Logical short-circuit operators | Not fully specified/implemented | Interpreter supports logical operators | Cross-runtime parity needed |
 | If/else | Basic syntax | Basic syntax | Native else-if behavior not complete |
-| While | Basic syntax | Basic syntax | Native assignment statements are missing |
+| While | Basic syntax | Basic syntax | Assignment is now in the native subset; broader scope rules need tests |
 | Arrays | AST/runtime subset | Implemented subset | Native C++ codegen currently rejects array literals |
 | Struct declarations/instances | Not fully integrated | AST support present | Native parser does not parse declarations |
 | Schema declarations | Not implemented in native parser | Parsed and analyzed | Runtime parity needed |
