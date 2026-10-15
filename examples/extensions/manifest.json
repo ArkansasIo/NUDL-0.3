@@ -1,0 +1,12 @@
+{
+  "format": "org.nudl.extension",
+  "formatVersion": 1,
+  "name": "app-framework-sdk",
+  "version": "0.1.0",
+  "description": "Standard application templates for GUI and API projects",
+  "runtime": "nudl-extension-v1",
+  "entry": "extension.nudl",
+  "permissions": ["template.read", "project.generate"],
+  "capabilities": ["application-template", "api-module-template", "gui-module-template"],
+  "status": "example-specification-only"
+}

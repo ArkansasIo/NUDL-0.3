@@ -60,9 +60,14 @@ data people: Person {
 - `07-tests/`: C++ smoke, interpreter, and code-generation tests.
 - `runtime/` and `stdlib/`: runtime and standard-library design material.
 
+## Extension packages (proposed)
+
+NUDL extension-package format and safety design are documented in [docs/EXTENSION-PACKAGES.md](docs/EXTENSION-PACKAGES.md). The current .nudl language source format and the proposed packaged extension format are distinct concepts: extension declarations are not yet supported by the native parser/runtime. See [the extension package specification](spec/EXTENSION-PACKAGE-0.1.md) and [example extension](examples/extensions/app-framework-extension.nudl).
+
 ## Documentation index
 
 - [Changelog](CHANGELOG.md)
+- [Extension packages](docs/EXTENSION-PACKAGES.md)
 
 - [Language overview](docs/LANGUAGE.md)
 - [Proposed specification](spec/SPEC-0.3.md)

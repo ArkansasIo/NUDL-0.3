@@ -1,0 +1,29 @@
+# NUDL extension declaration example — proposal only.
+# The current NUDL 0.3 parser does not yet support extension blocks.
+
+extension AppFrameworkSDK {
+    version: "0.1.0"
+    description: "Standard application templates for GUI and API projects"
+    runtime: "nudl-extension-v1"
+
+    permissions: [
+        "template.read",
+        "project.generate"
+    ]
+
+    capability application_template {
+        template: "templates/application.ndf"
+        dry_run_default: true
+        overwrite_policy: "never"
+    }
+
+    capability api_module_template {
+        template: "templates/api-module.ndf"
+        requires: "project.generate"
+    }
+
+    capability gui_module_template {
+        template: "templates/gui-module.ndf"
+        requires: "project.generate"
+    }
+}
